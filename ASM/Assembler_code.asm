@@ -16,14 +16,16 @@ EXTRN OutputStr: proc
 	L1 DWORD 1
 	L2 DWORD 2
 	L3 BYTE "text for text", 0
-	L4 DWORD 10
-	L5 DWORD 50
-	L6 DWORD 4
-	L7 DWORD 6
-	L8 DWORD 13
-	L9 DWORD 5
-	L10 DWORD 3
-	L11 DWORD 23
+	L4 DWORD 3
+	L5 BYTE "23", 0
+	L6 BYTE "32", 0
+	L7 DWORD 10
+	L8 DWORD 50
+	L9 DWORD 4
+	L10 DWORD 6
+	L11 DWORD 13
+	L12 DWORD 5
+	L13 DWORD 23
 
 .data
 	buffer BYTE 256 dup(0)
@@ -68,9 +70,9 @@ m3:
 	call OutputInt
 e1:
 	mov eax, condv
-	cmp eax, condk
-	jae m4
-	jb m5
+	cmp eax, eax
+	jz m4
+	jnz m5
 	je m5
 m4:
 	push L1
@@ -111,6 +113,19 @@ local2:
 pow ENDP
 
 main PROC
+	mov eax, L4
+	cmp eax, eax
+	jz m6
+	jnz m7
+	je m7
+m6:
+	push offset L5
+	call OutputStr
+	jmp e3
+m7:
+	push offset L6
+	call OutputStr
+e3:
 	call Date
 	push eax
 	pop maindate
@@ -121,10 +136,10 @@ main PROC
 	pop maintime
 	push maintime
 	call OutputStr
-	push L4
+	push L7
 	pop mainy
 	push mainy
-	push L5
+	push L8
 	pop ebx
 	pop eax
 	sub eax, ebx
@@ -137,34 +152,34 @@ main PROC
 	pop mainpos
 	push mainpos
 	call OutputStr
-	push L6
-	push L7
+	push L9
+	push L10
 	pop edx
 	pop edx
-	push L7
-	push L6
+	push L10
+	push L9
 	call cond
 	push eax
 	pop mainres
 	push mainres
 	call OutputInt
-	push L8
+	push L11
 	pop maini
 	push maini
 	call OutputInt
-	push L6
-	pop eax
-	mov [mainarr+0], eax
 	push L9
 	pop eax
+	mov [mainarr+0], eax
+	push L12
+	pop eax
 	mov [mainarr+4], eax
-	push L7
+	push L10
 	pop eax
 	mov [mainarr+8], eax
 	push mainy
-	push L10
+	push L4
 	pop edx
-	push L10
+	push L4
 	call pow
 	push eax
 	pop eax
@@ -182,7 +197,7 @@ main PROC
 	pop mainpolish
 	push mainpolish
 	call OutputInt
-	push L11
+	push L13
 	mov eax, 4
 	mul L2
 	mov esi, eax

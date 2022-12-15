@@ -12,7 +12,7 @@ uint func cond(uint v,uint k)
    print 2;
    }
 
-     if(v^k){
+     if(v){
    print 1;
    }else{
    print 2;
@@ -30,9 +30,13 @@ ret res;
 }
 
 
-
 main
 {
+    if(3){
+    print '23';
+    }else{
+    print '32';
+    }
    var str date = Date();
    print date;
    var str time = Time();

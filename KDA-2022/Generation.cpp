@@ -346,13 +346,9 @@ namespace Gen {
 				if (flag_if) {
 					if (lexT.table[i + 2].lexema == LEX_RIGHTHESIS) {
 						out << "\tmov eax, " << idT.table[lexT.table[i + 1].idxTI].id << "\n";
-						if (idT.table[lexT.table[i + 1].idxTI].value.vuint > 0) {
 							out << "\tcmp eax, eax\n";
-						}
-						else {
-							out << "\tcmp eax, 1\n";
-
-						}
+						
+						
 
 						out << "\tjz m" << num_of_points << "\n";
 						out << "\tjnz m" << num_of_points + 1 << "\n";

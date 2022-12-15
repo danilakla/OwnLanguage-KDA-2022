@@ -31,12 +31,19 @@ namespace Semantic {
                 }
             break;
             case LEX_IF:  
-                if (lex.lextable.table[i + 2].idxTI != LT_TI_NULLIDX) {
-                if (lex.idtable.table[lex.lextable.table[i + 2].idxTI].iddatatype == IT::STR) {
-                    good = false;
-                    Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
-                }
-            }
+                j = i + 2;
+                    for (j; lex.lextable.table[j].lexema != LEX_RIGHTHESIS; j++) {
+                        if (lex.lextable.table[j].idxTI != LT_TI_NULLIDX&& lex.lextable.table[j].lexema!= LEX_OPERATOR) {//error
+                            if (lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype != IT::UINT) {
+                                good = false;
+                                Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
+                            }
+                        }
+                       
+                    }
+
+              
+                
                 continue;
             case LEX_ID:
                 j = i + 1;
