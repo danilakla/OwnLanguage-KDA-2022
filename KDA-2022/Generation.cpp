@@ -5,10 +5,9 @@ using namespace std;
 namespace Gen {
 	Generator::Generator(LT::LexTable plexT, IT::IdTable pidT, wchar_t pout[])
 	{
-		//hardCODE
 		lexT = plexT;
-		idT = pidT;
-		out = ofstream("D:\\KDA-2022\\ASM\\Assembler_code.asm", ios_base::out);
+		idT = pidT;  		
+		out = ofstream("..\\ASM\\Assembler_code.asm", ios_base::out);
 
 		Head();
 		Const();
@@ -270,8 +269,18 @@ namespace Gen {
 
 			case LEX_RET:
 				out << "\tpush ";
-				if (idT.table[lexT.table[i + 1].idxTI].idtype == IT::L)
-					out << idT.table[lexT.table[i + 1].idxTI].value.vuint << "\n";
+				if (idT.table[lexT.table[i + 1].idxTI].idtype == IT::L) {
+					if (idT.table[lexT.table[i + 1].idxTI].iddatatype == IT::IDDATATYPE::UINT) {
+						out << idT.table[lexT.table[i + 1].idxTI].id << "\n";
+
+					}
+					else {
+
+						out <<"offset "<< idT.table[lexT.table[i + 1].idxTI].id << "\n";
+
+					}
+
+				}
 				else
 					out << idT.table[lexT.table[i + 1].idxTI].id << "\n";
 				if (flag_func) {

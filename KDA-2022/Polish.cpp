@@ -3,26 +3,26 @@
 namespace Polish {
 	bool PolishNotation(int i, Lex::LEX& lex) 
 	{
-		std::stack<LT::Entry> stack;	// В стек будем заносить операции
-		std::queue<LT::Entry> queue;	// В очередь будем заносить операнды
+		std::stack<LT::Entry> stack;	
+		std::queue<LT::Entry> queue;	
 
 		LT::Entry placeholder_symbol;		
 		placeholder_symbol.idxTI = -1;	
 		placeholder_symbol.lexema = ' ';
 		placeholder_symbol.sn = lex.lextable.table[i].sn;
 
-		LT::Entry function_symbol;				// Лексема, обозначающая конец функции
-		function_symbol.idxTI = LT_TI_NULLIDX;	// Признак начала и окончания функции
+		LT::Entry function_symbol;				
+		function_symbol.idxTI = LT_TI_NULLIDX;	
 		function_symbol.lexema = '@';
 		function_symbol.sn = lex.lextable.table[i].sn;
 		int idx;
 
 		int lexem_counter = 0;
-		int parm_counter = 0;			// Количество параметров в функции
-		int lexem_position = i;			// Запоминаем номер лексемы перед преобразованием
+		int parm_counter = 0;			
+		int lexem_position = i;			
 		char* buf = new char[i];
 
-		bool findFunc = false;			// флаг на нахождение функции
+		bool findFunc = false;			
 
 		for (i; lex.lextable.table[i].lexema != LEX_SEMICOLON; i++, lexem_counter++) 
 		{

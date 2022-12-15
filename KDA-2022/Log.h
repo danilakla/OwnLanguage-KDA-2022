@@ -15,18 +15,18 @@ namespace Log
 	struct LOG
 	{
 		wchar_t logfile[PARM_MAX_SIZE];
-		std::ofstream* stream;						// потоковый вывод ofstream из <fstream>
+		std::ofstream* stream;						
 	};
 
-	static const LOG INITLOG = { L"", NULL };		// инициализаци€ LOG
-	LOG	 getlog(wchar_t logfile[]);					// формирование структуры
-	void WriteLine(LOG log, const wchar_t* c, ...); // вывод конкатенации строк
-	void WriteLine(LOG log, const char* c, ...);	// вывод конкатенации строк
-	void WriteLog(LOG log);							// вывод заголовка
-	void WriteParm(LOG log, Parm::PARM parm);		// информаци€ о входных параметрах
-	void WriteIn(LOG log, In::IN in);				// информаци€ о входном потоке
-	void WriteError(LOG log, Error::ERROR error);	// протокол об ошибке
-	void Close(LOG log);							// закрытие потока
+	static const LOG INITLOG = { L"", NULL };		
+	LOG	 getlog(wchar_t logfile[]);					
+	void WriteLine(LOG log, const wchar_t* c, ...); 
+	void WriteLine(LOG log, const char* c, ...);	
+	void WriteLog(LOG log);							
+	void WriteParm(LOG log, Parm::PARM parm);		
+	void WriteIn(LOG log, In::IN in);				
+	void WriteError(LOG log, Error::ERROR error);	
+	void Close(LOG log);							
 	void WriteLex(LOG log, LT::LexTable lex, Parm::PARM parm);
 	void WriteIT(LOG log, IT::IdTable idt, Parm::PARM parm);
 	void WriteLexTableLog(LT::LexTable& lextable, std::ostream& out);

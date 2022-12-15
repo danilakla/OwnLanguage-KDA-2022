@@ -50,6 +50,8 @@ namespace Lex {
 		int is_cycle = 0;
 		bool findArray = 0;
 		int countSize = 0;
+		bool findPropery=0;
+		bool printCheck = 0;
 
 
 		std::stack<std::string> functions;
@@ -65,6 +67,11 @@ namespace Lex {
 
 		for (int i = 0; word[i] != NULL; i++, indexLex++)
 		{
+			std::cout << strlen(word[i]) << std::endl;
+			if (strlen(word[i]) > 72) {
+				throw ERROR_THROW_IN(211, line, position);
+
+			}
 			bool findSameID = false;
 			position += strlen(word[i]);
 			if (FST::execute(FST::FST(word[i], FST_VAR)))
@@ -72,6 +79,7 @@ namespace Lex {
 				LT::Entry entryLT = WriteEntry(entryLT, LEX_VAR, LT_TI_NULLIDX, line);
 				LT::Add(lextable, entryLT);
 				findDeclaration = true;
+				findPropery = true;
 				countSize++;
 			}
 
@@ -104,8 +112,10 @@ namespace Lex {
 			}
 			else if (FST::execute(FST::FST(word[i], FST_FUNC)))
 			{
+				
 				LT::Entry entryLT = WriteEntry(entryLT, LEX_FUNCTION, LT_TI_NULLIDX, line);
 				LT::Add(lextable, entryLT);
+				
 				findFunc = true;
 			}
 			else if (FST::execute(FST::FST(word[i], FST_RET)))
@@ -115,6 +125,7 @@ namespace Lex {
 			}
 			else if (FST::execute(FST::FST(word[i], FST_PRINT)))
 			{
+				printCheck = true;
 				LT::Entry entryLT = WriteEntry(entryLT, LEX_PRINT, LT_TI_NULLIDX, line);
 				LT::Add(lextable, entryLT);
 			}
@@ -161,14 +172,20 @@ namespace Lex {
 			else if (FST::execute(FST::FST(word[i], FST_INTLIT)))
 			{
 				int value = atoi((char*)word[i]);
-				if (value < 0) {
-					throw ERROR_THROW(302);
+				
+				if (value< 0) {
+					Log::WriteError(log, Error::geterrorin(207, line, position));
+
+					throw ERROR_THROW(207);
+
 				}
 				if (findArray && countSize == 2
 					
 					) { //ARRAY
 					if (value <= 0) {
-						throw ERROR_THROW(302);
+						Log::WriteError(log, Error::geterrorin(207, line, position));
+
+						throw ERROR_THROW(207);
 					}
 					entryIT.size = value;
 					findArray = false;
@@ -284,9 +301,14 @@ namespace Lex {
 			}
 			else if (FST::execute(FST::FST(word[i], FST_ID)))
 			{
-				
+				if (strlen(word[i]) > 7) {
+					throw ERROR_THROW_IN(210, line, position);
+
+				}
 				if (findArray&& countSize == 2) {
-					throw ERROR_THROW(302);
+					Log::WriteError(log, Error::geterrorin(211, line, position));
+
+					throw ERROR_THROW(211);
 
 				}
 				if (findParm)
@@ -298,6 +320,7 @@ namespace Lex {
 				}
 				else
 				{
+					
 					entryIT.idtype = IT::V;
 					int idx = IT::IsId(idtable, word[i]);
 					if (idx != IT_NULLIDX) {
@@ -321,6 +344,12 @@ namespace Lex {
 					strcpy(bufprefix, functions.top().c_str());
 					word[i] = strcat(bufprefix, word[i]);
 				}
+				if (!findPropery && IT::IsId(idtable, word[i]) == IT_NULLIDX&&!findFunc) {
+
+					Log::WriteError(log, Error::geterrorin(209, line, position));
+					throw ERROR_THROW(209);
+
+				}
 				strcpy(entryIT.id, word[i]);
 				int idx = IT::IsId(idtable, word[i]);
 				if (idx == IT_NULLIDX)
@@ -328,6 +357,7 @@ namespace Lex {
 				LT::Entry entryLT = WriteEntry(entryLT, LEX_ID, IT::IsId(idtable, word[i]), line);
 				LT::Add(lextable, entryLT);
 				entryIT = { };
+				
 			}
 			else if (FST::execute(FST::FST(word[i], FST_OP)))
 			{
@@ -387,6 +417,7 @@ namespace Lex {
 			else if (FST::execute(FST::FST(word[i], FST_SEMICOLON)))
 			{
 				countSize = 0;
+				printCheck = 0;
 				if (findDeclaration && findFunc && findType)
 					functions.pop();
 				LT::Entry entryLT = WriteEntry(entryLT, LEX_SEMICOLON, LT_TI_NULLIDX, line);
@@ -435,11 +466,15 @@ namespace Lex {
 			else if (FST::execute(FST::FST(word[i], FST_LEFTSQ))) //ARRAY
 			{
 				if (!FST::execute(FST::FST(word[i + 1], FST_INTLIT))) {
-					throw ERROR_THROW(301);
+					Log::WriteError(log, Error::geterrorin(208, line, position));
+
+					throw ERROR_THROW(208);
 				}
 
 				if (findDeclaration && !findType&& FST::execute(FST::FST(word[i + 1], FST_RIGHTSQ))) {
-					throw ERROR_THROW(301);				
+					Log::WriteError(log, Error::geterrorin(208, line, position));
+
+					throw ERROR_THROW(208);
 				
 				}
 				countSize++;
@@ -462,6 +497,7 @@ namespace Lex {
 			{
 				LT::Entry entryLT = WriteEntry(entryLT, LEX_EQUAL, LT_TI_NULLIDX, line);
 				LT::Add(lextable, entryLT);
+				findPropery = false;
 			}
 			else if (word[i][0] == DIV)
 			{
@@ -470,7 +506,16 @@ namespace Lex {
 				indexLex--;
 			}
 			else
-				throw ERROR_THROW_IN(205, line, position);
+			{
+				if (strlen(word[i]) >7) {
+					throw ERROR_THROW_IN(210, line, position);
+
+				}
+				else {
+					throw ERROR_THROW_IN(205, line, position);
+
+				}
+			}
 		}
 
 		if (!findMain) throw ERROR_THROW(302);
@@ -480,7 +525,6 @@ namespace Lex {
 		lex.lextable = lextable;
 		return lex;
 	}
-
 	void Synchronization(Lex::LEX& lex) {
 		bool* is_changed = new bool[lex.idtable.size] { false };
 		for (int i = 0; i < lex.lextable.size; i++)
@@ -493,6 +537,7 @@ namespace Lex {
 		}
 		delete[] is_changed;
 	}
+	
 }
 
 

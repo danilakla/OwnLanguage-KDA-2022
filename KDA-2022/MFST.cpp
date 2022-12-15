@@ -1,6 +1,7 @@
 #include "Main.h"
 #include "MFST.h"
-
+#include <stdio.h> 
+#include <time.h> 
 namespace MFST {
 #pragma region CONSTRUCTORS
 	MfstState::MfstState() 
@@ -58,6 +59,7 @@ namespace MFST {
 #pragma endregion
 	Mfst::RC_STEP Mfst::step(std::ostream& stream_out) 
 	{
+
 		RC_STEP rc = SURPRISE;
 		if (lenta_position < lenta_size) {
 			if (GRB::Rule::Chain::isN(st.top())) {
@@ -152,8 +154,20 @@ namespace MFST {
 		RC_STEP rc_step = SURPRISE;
 		char buf[MFST_DIAGN_MAXSIZE]{};
 		rc_step = step(stream_out);
+		double seconds=0;
 		while (rc_step == NS_OK || rc_step == NS_NORULECHAIN || rc_step == TS_OK || rc_step == TS_NOK)
+		{
+			clock_t start = clock();
 			rc_step = step(stream_out);
+			clock_t end = clock();
+
+			 seconds += (double)(end - start) / CLOCKS_PER_SEC;
+			 if (seconds > 5) {
+				 exit(-1);
+			 }
+		}
+		std::cout << seconds;
+
 
 		switch (rc_step) {
 		case LENTA_END:

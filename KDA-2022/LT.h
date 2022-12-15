@@ -35,12 +35,12 @@
 
 #define LEX_EQUAL		'=' // =
 
-#define LEX_MORE		'v' // > +
-#define LEX_LESS		'v' // < +
-#define	LEX_EQMORE		'v' // ^ +
+#define LEX_MORE		'v' // > 
+#define LEX_LESS		'v' // < 
+#define	LEX_EQMORE		'v' // ^ 
 #define LEX_EQLESS		'v' // _
 #define LEX_EQUALS		'v' // ~
-#define LEX_NEQUALS		'v' // ! +
+#define LEX_NEQUALS		'v' // ! 
 
 #define LEX_PLUS		'v' // +
 #define LEX_MINUS		'v' // -
@@ -49,7 +49,7 @@
 
 #define LEX_OPERATOR	'v'
 
-namespace LT		// таблица лексем
+namespace LT		
 {
 	enum operations {
 		OPLUS = 1,
@@ -64,38 +64,38 @@ namespace LT		// таблица лексем
 		ONOTEQUALS
 	};
 
-	struct Entry	// строка таблицы лексем
+	struct Entry	
 	{
-		char			lexema;					// лексема
-		int				sn;						// номер строки в исходном тексте
-		int				idxTI;					// индекс в таблице идентификаторов (или LT_TI_NULLIDX)
+		char			lexema;				
+		int				sn;					
+		int				idxTI;				
 		int				priority;
 		operations		op;
 	};
 
-	struct LexTable // экземпл€р таблицы лексем
+	struct LexTable 
 	{
-		int		maxsize;				// емкость таблица лексем < LT_MAXSIZE
-		int		size;					// текущий размер таблица лексем < maxsize
-		Entry* table;					// массив строк таблицы лексем
+		int		maxsize;	
+		int		size;		
+		Entry* table;		
 	};
 
-	LexTable Create(					// создание таблица лексем
-		int size						// предполагаема€ емкость таблицы лексем < LT_MAXSIZE
+	LexTable Create(		
+		int size			
 	);
 
-	void Add(							// добавление строки в таблицу лексем
-		LexTable& lextable,				// экземпл€р таблица лексем
-		Entry entry						// строка дл€ добавлени€ в таблицу лексем
+	void Add(				
+		LexTable& lextable,	
+		Entry entry			
 	);
 
-	Entry GetEntry(						// получение строки из таблицы лексем
-		LexTable& lextable,				// экземпл€р таблицы лексем
-		int n							// строка таблицы лексем
+	Entry GetEntry(			
+		LexTable& lextable,	
+		int n				
 	);
 
-	void Delete(						// удаление таблицы лексем (освобождение пам€ти)
-		LexTable& lextable				// экземпл€р таблицы лексем
+	void Delete(			
+		LexTable& lextable	
 	);
 
 	Entry WriteEntry(Entry& entry, char lexema, int indx, int line);

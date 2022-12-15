@@ -4,32 +4,32 @@
 
 namespace FST {
 
-	struct RELATION {			// ребро:символ -> вершина графа переходов КА
-		char symbol;			// символ перехода
-		short nnode;			// номер смежной вершины
+	struct RELATION {			
+		char symbol;			
+		short nnode;			
 		RELATION(
-			char c = 0x00,		// символ перехода 
-			short ns = NULL		// новое состояние
+			char c = 0x00,		
+			short ns = NULL		
 		);
 	};
 
-	struct NODE {				// вершина графа переходов
-		short n_relation;		// количество инциндентных ребер
-		RELATION* relations;	// инцидентные ребра
+	struct NODE {				
+		short n_relation;		
+		RELATION* relations;	
 		NODE();
 		NODE(
-			short n,			// количество инциндентных ребер
-			RELATION rel, ...	// список ребер
+			short n,			
+			RELATION rel, ...	
 		);
 	};
 
 
 	struct FST {
-		const char* string;		// цепочка
-		short position;			// текущая позиция в цепочке
-		short nstates;			// количество состояний автомата
-		NODE* nodes;			// граф переходов: [0] - начальное состояние, [nstate-1] - конечное состояние
-		short* rstates;			// возможные состояния на данной позиции
+		const char* string;		
+		short position;			
+		short nstates;			
+		NODE* nodes;			
+		short* rstates;			
 		FST(
 			char* s,
 			short ns,
@@ -39,7 +39,7 @@ namespace FST {
 
 	bool step(FST& fst, short*& rstates);
 
-	bool execute(				// выполнить распознавание цепочки
-		FST fst				// недетерминированный конечный автомат
+	bool execute(			
+		FST fst				
 	);
 }

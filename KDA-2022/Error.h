@@ -1,6 +1,6 @@
 #pragma once
 #define ERROR_THROW(id) Error::geterror(id);
-#define ERROR_THROW_IN(id, l, c) Error::geterrorin(id, l, c)		// код ошибки, номер строки и расположение для протокола транслятора
+#define ERROR_THROW_IN(id, l, c) Error::geterrorin(id, l, c)		
 #define ERROR_ENTRY(id, m) {id, m, {-1, 1}}
 #define ERROR_MAXSIZE_MESSAGE 200
 #define ERROR_ENTRY_NODEF(id)		ERROR_ENTRY(-id, "Неопределенная ошибка")
@@ -14,11 +14,11 @@
 
 namespace Error {
 	struct ERROR {
-		int id;		// код ошибки
-		char message[ERROR_MAXSIZE_MESSAGE];	// сообщение об ошибке
+		int id;		
+		char message[ERROR_MAXSIZE_MESSAGE];	
 		struct IN {
-			short line;	// номер строки
-			short col;	// номер символа в строке
+			short line;	
+			short col;	
 		} inext;
 	};
 

@@ -4,13 +4,13 @@ namespace FST {
 
 	RELATION::RELATION(char c, short nn)
 	{
-		symbol = c;					// символ перехода
-		nnode = nn;					// номер смежной вершины
+		symbol = c;					
+		nnode = nn;					
 	};
 
 	NODE::NODE() {
-		n_relation = 0;				// количество инциндентных ребер
-		RELATION* relations = NULL;	// инцидентные ребра
+		n_relation = 0;				
+		RELATION* relations = NULL;
 	};
 
 	NODE::NODE(short n, RELATION rel, ...)
@@ -24,16 +24,16 @@ namespace FST {
 
 	FST::FST(char* s, short ns, NODE n, ...)
 	{
-		string = s;					// цепочка (строка, завршатся 0x00 )
-		nstates = ns;				// количество состояний автомата
-		nodes = new NODE[ns];		// граф переходов: [0] - начальное состояние, [nstate-1] - конечное 
+		string = s;					
+		nstates = ns;				
+		nodes = new NODE[ns];		
 		NODE* p = &n;
 		for (int i = 0; i < ns; i++)
 			nodes[i] = p[i];
-		rstates = new short[nstates];// возможные состояния автомата на данной позиции
-		memset(rstates, 0xff, sizeof(short) * nstates);// заполняет массив нулями
+		rstates = new short[nstates];
+		memset(rstates, 0xff, sizeof(short) * nstates);
 		rstates[0] = 0;
-		position = -1;				// текущая позиция в цепочке
+		position = -1;				
 	}
 
 	bool step(FST& fst, short*& rstates)
@@ -57,8 +57,8 @@ namespace FST {
 
 	bool execute(FST fst)
 	{
-		short* rstates = new short[fst.nstates];			// массив размера nstates
-		memset(rstates, 0xff, sizeof(short) * fst.nstates);	// заполняется нулями
+		short* rstates = new short[fst.nstates];			
+		memset(rstates, 0xff, sizeof(short) * fst.nstates);	
 		short lstring = strlen(fst.string);
 
 		bool rc = true;

@@ -1,31 +1,31 @@
 #include "Split.h"
 
-char** splitText(char origin[], int size) { // Создаем массив строк, состоящий из лексем.
+char** splitText(char origin[], int size) { 
 	char** words = new char* [max_word];
 	for (int i = 0; i < max_word; i++)
-		words[i] = new char[size_word] {NULL}; // Заполнение массив нулями.
+		words[i] = new char[size_word] {NULL}; 
 	bool findSepSymb, findLiteral = false;
 	int j = 0;
-	char sepSymbArr[] = { " ,;<>(){}[]=+-*/|^~_!" };	// Массив символов сепараторов.
-	for (int i = 0, k = 0; i < size ; i++, k++) {//sepSymbArr[t] == ' ' => true => k=-1+1=0
-		findSepSymb = false;					// Флаг на нахождение апострафа.
+	char sepSymbArr[] = { " ,;<>(){}[]=+-*/|^~_!" };	
+	for (int i = 0, k = 0; i < size ; i++, k++) {
+		findSepSymb = false;					
 		if (origin[i] == '\'')
-			findLiteral = !findLiteral;		// Нашли кавычку, меняем значение на противоположное.
+			findLiteral = !findLiteral;		
 		for (int t = 0; t < sizeof(sepSymbArr) - 1; t++) 
 		{
-			if (origin[i] == sepSymbArr[t] && !findLiteral) { // findLiteral = false
-				findSepSymb = true;			// Нашли сепаратор, меняем значение.
+			if (origin[i] == sepSymbArr[t] && !findLiteral) {
+				findSepSymb = true;			
 				if (words[j][0] != NULL) 
 				{
-					words[j++][k] = '\0';		// Переход на новую строку.
+					words[j++][k] = '\0';		
 					k = 0;
 				}
-				if (sepSymbArr[t] == ' ')		// Пробелы пропускаем!
+				if (sepSymbArr[t] == ' ')		
 				{	
 					k = -1;
 					break;
 				}
-				words[j][k++] = sepSymbArr[t];// Не пробелы записываем.
+				words[j][k++] = sepSymbArr[t];
 				words[j++][k] = '\0';
 				k = -1;
 				break;
@@ -36,8 +36,8 @@ char** splitText(char origin[], int size) { // Создаем массив строк, состоящий и
 	}
 	words[j] = NULL;
 	for (int i = 0; i < j; i++)
-		if (!strcmp((char*)words[i], ""))	// strcmp - осуществляет лексикографическую проверку двух строк.
-			return NULL;					// strcmp - возвращает число, на сколько различаются.
+		if (!strcmp((char*)words[i], ""))	 
+			return NULL;					
 	return words;
 }
 
@@ -51,26 +51,36 @@ void cleanComment(char origin[], int size, Log::LOG logfile) {
 				origin[i+1] = ' ';
 				int j = i + 2;
 				int k = 0;
+				
 				while (k!=2)
 				{
+					if (k == 1 && origin[j] != '/') {
+						Log::WriteError(logfile, Error::geterror(206));
+						throw ERROR_THROW(206);
+
+						break;
+					}
 					if (origin[j] == '/') {
+						
 						k++;
+						j++;
 						continue;
 					}
 					origin[j] = ' ';
 					
 					j++;
 					if (j > size) {
-						Log::WriteError(logfile, Error::geterror(300));
-						throw ERROR_THROW(302);
+						Log::WriteError(logfile, Error::geterror(206));
+						throw ERROR_THROW(206);
 
 						break;
 					}
 					
 				}
-				origin[j] = ' ';
-				origin[j+1] = ' ';
-				i = j + 1;
+				origin[j-1] = ' ';
+				origin[j-2] = ' ';
+		
+				i = j ;
 			}
 
 		}

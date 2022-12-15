@@ -10,60 +10,60 @@
 namespace IT
 {
 	enum IDDATATYPE { UINT = 1, STR = 2, UINTARRAY=3};
-	enum IDTYPE { V = 1, F = 2, P = 3, L = 4, OP = 5 };	// типы идентификаторов: переменная/функция/параметр/литерал/оператор
+	enum IDTYPE { V = 1, F = 2, P = 3, L = 4, OP = 5 };
 
-	struct Entry	// строка таблицы идентификаторов
+	struct Entry	
 	{
-		int			idxfirstLE;		// индекс в таблице лексем
-		char		id[ID_MAXSIZE];	// идентификатор (автоматически усекается до ID_MAXSIZE)
-		IDDATATYPE	iddatatype;		// тип данных
-		IDTYPE		idtype;			// тип идентификатора
+		int			idxfirstLE;		
+		char		id[ID_MAXSIZE];	
+		IDDATATYPE	iddatatype;		
+		IDTYPE		idtype;			
 
-		int			numbersystem;	// система счисления
-		int			parmsamount;	// для вызовов: количество параметров
+		int			numbersystem;	
+		int			parmsamount;	
 
-		int			index;					// глубина вхождения 
-		char		function[ID_MAXSIZE];	// функция, которой принадлежит
+		int			index;					
+		char		function[ID_MAXSIZE];	
 		int			size = 0;
-		struct		// 
+		struct		
 		{
-			unsigned int vuint = 0;					// значение unsigned integer
+			unsigned int vuint = 0;				
 			struct
 			{
-				int len;						// количество символов в string
-				char str[IT_STR_MAXSIZE - 1]{};	// символы string
-			}vstr;								// значение string
-		}value;		// значение идентификатора
+				int len;						
+				char str[IT_STR_MAXSIZE - 1]{};	
+			}vstr;								
+		}value;		
 	};
 
-	struct IdTable	// экземпляр таблицы идентификаторов
+	struct IdTable	 
 	{
-		int			maxsize;		// емкость таблицы < TI_MAXSIZE
-		int			size;			// текущий размер таблицы идентификаторов < maxsize
-		Entry* table;			// массив строк таблицы идентификаторов
+		int			maxsize;	
+		int			size;		
+		Entry* table;			
 	};
 
-	IdTable Create(					// создание таблицы идентификаторов
-		int size					// предполагаемая емкость таблицы < TI_MAXSIZE
+	IdTable Create(				
+		int size				
 	);
 
 	void Add(
-		IdTable& idtable,			// экземпляр таблицы идентификаторов
-		Entry entry					// добавляемая строка таблицы идентификаторов
+		IdTable& idtable,		
+		Entry entry				
 	);
 
-	Entry GetEntry(					// получение строки таблицы идентификаторов
-		IdTable& idtable,			// экземпляр таблицы идентификаторов
-		int n						// номер получаемой строки
+	Entry GetEntry(				
+		IdTable& idtable,		
+		int n					
 	);
 
-	int IsId(						// возврат номера строки (если нет - TI_NULLIDX)
-		IdTable& idtable,			// экземпляр таблицы идентификаторов
-		char id[ID_MAXSIZE]			// идентификатор
+	int IsId(					
+		IdTable& idtable,		
+		char id[ID_MAXSIZE]		
 	);
 
-	void Delete(					// удаление таблицы идентификаторов (освобождение памяти) 
-		IdTable& idtable			// экземпляр таблицы идентификаторов
+	void Delete(				
+		IdTable& idtable		
 	);
 
 	void ShowTable(

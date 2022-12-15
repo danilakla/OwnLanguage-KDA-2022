@@ -1,70 +1,61 @@
-uint func tar(str a, str b)
+uint func cond(uint v,uint k) 
 {
-var str date = Date();
-print date;
-var str time = Time();
-print time;
-var [3] uint tes=1,23,45;
-var uint vc=tes[2]+300+tes[2]+tes[2]+tes[2]+tes[2];
-var uint vcv=tes[2]+300+tes[2]+tes[2]+tes[2]+tes[2];
-var uint cxtes;
-var [3] uint tes1=1,23,45;
-print '------------';
-var [4] uint tds=1,2,3,4;
-var uint ti=tds[0];
-print ti;
-tds[0]=tds[3]+15;
-var uint vb=tds[0];
-print vb;
-print 2;
-print '------------';
-cxtes=1112;
-var [3] uint tes3=1,23,45;
 
-print cxtes;
-var [3] uint tes2=1,23,45;
+   if(v>k){
+   print 1;
+   }else{
+   print 2;
+   }
+    if(v!k){
+   print 1;
+   }else{
+   print 2;
+   }
 
-print vcv;
-var [3] uint tes6=1,23,45;
-var uint cvvvv=tes6[1]+tes[1];
-print cvvvv;
-print 0;
-print 0;
-print vc;
-ret 10;
+     if(v^k){
+   print 1;
+   }else{
+   print 2;
+   }
+   ret 1;
 }
 
-uint func fd(uint cxvcx, str fvcv){
-ret 44;
+str func text(){
+ret 'text for text';
 }
 
-main{
-
-if(10>3){ //condition//
-print 2; //body//
-}else{
-print 3; //body//
+uint func pow(uint c){
+var uint res=c*c;
+ret res;
 }
 
-var[4] uint tecx=1,2,3,4;
-var uint gdh=8x3332; 
-print gdh;
-if(10){ //condition//
-print ' test'; //body//
-}
-var uint vc = tecx[3]+3+fd(24,'dscxc');
-var uint cvx=5+10+tecx[2];
-//print cvx;//
-print vc;
-var uint rc = tar('4314','315');
-print rc;
 
-var uint okk=8x15+4;
-print okk;
 
-print 'lefet reveal o';
-var uint size = 10;
-var [10] uint  pis = 1,2,3,4,5,6,7,8,9,10;
-var uint a = pis[3];
-print a;
+main
+{
+   var str date = Date();
+   print date;
+   var str time = Time();
+   print time;
+   var uint x;
+   var uint y;
+
+   y = 10;
+   x = y - 50;
+   print x;
+   var str pos = text();
+   print pos;
+ 
+   var uint res = cond(4,6);
+   print res;
+   var uint i = 8x15;
+   print i;
+   var uint polish;
+   var [3]uint arr=4,5,6;
+   
+   polish = y+pow(3)+arr[2];
+   print polish;
+   arr[1]=23+arr[2];
+  polish=arr[1];
+  print polish;
 }

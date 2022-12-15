@@ -23,10 +23,24 @@ namespace Semantic {
                         Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[j].sn, -1));
                     }
                 }
+                if (lex.lextable.table[i + 1].idxTI != LT_TI_NULLIDX) {
+                    if (lex.idtable.table[lex.lextable.table[i + 1].idxTI].iddatatype == IT::IDDATATYPE::UINTARRAY) {
+                        good = false;
+                        Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[j].sn, -1));
+                    }
+                }
             break;
+            case LEX_IF:  
+                if (lex.lextable.table[i + 2].idxTI != LT_TI_NULLIDX) {
+                if (lex.idtable.table[lex.lextable.table[i + 2].idxTI].iddatatype == IT::STR) {
+                    good = false;
+                    Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
+                }
+            }
+                continue;
             case LEX_ID:
                 j = i + 1;
-
+                std::cout << lex.idtable.table[lex.lextable.table[i].idxTI].iddatatype;
                 if (lex.idtable.table[lex.lextable.table[i].idxTI].iddatatype == IT::IDDATATYPE::UINTARRAY &&
                     lex.lextable.table[i - 1].lexema == LEX_UINT)
                 {
@@ -36,12 +50,14 @@ namespace Semantic {
                     else
                     {
                         good = false;
-                        Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[j].sn, -1));
+                        Log::WriteError(log, Error::geterrorin(316, lex.lextable.table[j].sn, -1));
                     }
                 }
                 if (lex.idtable.table[lex.lextable.table[i].idxTI].idtype == IT::F &&
-                    lex.lextable.table[i - 1].lexema != LEX_FUNCTION) 
+                    lex.lextable.table[i - 1].lexema != LEX_FUNCTION&&
+                    lex.lextable.table[i - 1].lexema != LEX_PRINT)
                 {
+
                     for (const auto &items : functions_parm) 
                     {
                         if (items.first == lex.idtable.table[lex.lextable.table[i].idxTI].id) 
@@ -78,6 +94,24 @@ namespace Semantic {
                     }
                 }
                 continue;
+
+            case LEX_DIRSLASH:
+                if (lex.lextable.table[i].op == LT::ODIV) {
+                    if (lex.lextable.table[i + 1].idxTI!= LT_TI_NULLIDX) {
+                        if (lex.idtable.table[lex.lextable.table[i + 1].idxTI].value.vuint == 0) {
+                            Log::WriteError(log, Error::geterrorin(319, lex.lextable.table[j].sn, -1));
+                            good = false;
+                        }
+                    }
+                    else {
+                        Log::WriteError(log, Error::geterrorin(310, lex.lextable.table[j].sn, -1));
+                        good = false;
+                    }
+                  
+                }
+                continue;
+
+
             case LEX_EQUAL:
                 j = i + 1;
 
@@ -107,53 +141,54 @@ namespace Semantic {
                         }
 
                         if (t != sizeArray) {
-                            Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
+                            Log::WriteError(log, Error::geterrorin(317, lex.lextable.table[j].sn, -1));
                             good = false;
                         }
                         sizeArray = 0;
                         break;
                     }
                 }
+
                 if (lex.lextable.table[i - 1].lexema ==LEX_RIGHTSQ) {
-                    if (lex.idtable.table[lex.lextable.table[i - 2].idxTI].value.vuint >= lex.idtable.table[lex.lextable.table[i - 4].idxTI].size ||
-                        lex.idtable.table[lex.lextable.table[i - 2].idxTI].value.vuint < 0
-                        )
-                    {
-                        Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
-                        good = false;
-                    }
-                    switch (lex.lextable.table[j].lexema)
-                    {
-                    case LEX_ID:
-                    case LEX_LITERAL:
-                        if ((lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype !=
-                            lex.idtable.table[lex.lextable.table[i - 4].idxTI].iddatatype) &&
-                            lex.idtable.table[lex.lextable.table[i - 4].idxTI].iddatatype != IT::IDDATATYPE::UINT
+                    for (j; lex.lextable.table[j].lexema != LEX_SEMICOLON; j++) {
+                        if (lex.idtable.table[lex.lextable.table[i - 2].idxTI].value.vuint >= lex.idtable.table[lex.lextable.table[i - 4].idxTI].size ||
+                            lex.idtable.table[lex.lextable.table[i - 2].idxTI].value.vuint < 0
                             )
                         {
-                            Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
+                            Log::WriteError(log, Error::geterrorin(318, lex.lextable.table[j].sn, -1));
                             good = false;
                         }
-                        if (lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype == IT::IDDATATYPE::UINTARRAY) {
-                            int size = lex.idtable.table[lex.lextable.table[j].idxTI].size;
-                            if (lex.idtable.table[lex.lextable.table[j + 2].idxTI].value.vuint >= size || lex.idtable.table[lex.lextable.table[j + 2].idxTI].value.vuint < 0) {
+                        switch (lex.lextable.table[j].lexema)
+                        {
+                        case LEX_ID:
+                        case LEX_LITERAL:
+                            if ((lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype != IT::IDDATATYPE::UINTARRAY &&
+                                lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype != IT::IDDATATYPE::UINT
+                                ))
+                            {
                                 Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
                                 good = false;
                             }
+                            if (lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype == IT::IDDATATYPE::UINTARRAY) {
+                                int size = lex.idtable.table[lex.lextable.table[j].idxTI].size;
+                                if (lex.idtable.table[lex.lextable.table[j + 2].idxTI].value.vuint >= size || lex.idtable.table[lex.lextable.table[j + 2].idxTI].value.vuint < 0) {
+                                    Log::WriteError(log, Error::geterrorin(318, lex.lextable.table[j].sn, -1));
+                                    good = false;
+                                }
+                            }
+                            continue;
+                        case LEX_LEFTHESIS:
+                            if (lex.lextable.table[j - 1].lexema != LEX_OPERATOR &&
+                                lex.lextable.table[j - 1].lexema != LEX_LEFTHESIS)
+                            {
+                                do {
+                                    j++;
+                                } while (lex.lextable.table[j].lexema != LEX_RIGHTHESIS);
+                            }
+                            continue;
                         }
-                        continue;
-                    case LEX_LEFTHESIS:
-                        if (lex.lextable.table[j - 1].lexema != LEX_OPERATOR &&
-                            lex.lextable.table[j - 1].lexema != LEX_LEFTHESIS)
-                        {
-                            do {
-                                j++;
-                            } while (lex.lextable.table[j].lexema != LEX_RIGHTHESIS);
-                        }
-                        continue;
-                    }
 
-                    break;
+                    }
                 }
 
                
@@ -163,18 +198,24 @@ namespace Semantic {
                     {
                     case LEX_ID:
                     case LEX_LITERAL:
-                        if ((lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype !=
+                        if (((lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype !=
                              lex.idtable.table[lex.lextable.table[i - 1].idxTI].iddatatype)&&
-                            lex.idtable.table[lex.lextable.table[i - 1].idxTI].iddatatype!= IT::IDDATATYPE::UINT
-                            ) 
+                            !(lex.idtable.table[lex.lextable.table[i-1].idxTI].iddatatype==IT::IDDATATYPE::UINT&&
+                                lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype==IT::IDDATATYPE::UINTARRAY) ))
                         {
                             Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
                             good = false;
                         }
                         if (lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype == IT::IDDATATYPE::UINTARRAY) {
                             int size=lex.idtable.table[lex.lextable.table[j].idxTI].size;
+                            if (lex.lextable.table[j + 1].lexema != LEX_LEFTSQ) {
+                                Log::WriteError(log, Error::geterrorin(320, lex.lextable.table[j].sn, -1));
+                                good = false;
+
+                                break;
+                            }
                             if (lex.idtable.table[lex.lextable.table[j + 2].idxTI].value.vuint >=  size||lex.idtable.table[lex.lextable.table[j + 2].idxTI].value.vuint<0) {
-                                Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));
+                                Log::WriteError(log, Error::geterrorin(318, lex.lextable.table[j].sn, -1));
                                 good = false;
                             }
                         }
