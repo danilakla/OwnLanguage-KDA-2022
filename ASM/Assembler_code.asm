@@ -15,17 +15,15 @@ EXTRN OutputStr: proc
 .CONST
 	L1 DWORD 1
 	L2 DWORD 2
-	L3 BYTE "text for text", 0
-	L4 DWORD 3
-	L5 BYTE "23", 0
-	L6 BYTE "32", 0
-	L7 DWORD 10
-	L8 DWORD 50
-	L9 DWORD 4
-	L10 DWORD 6
-	L11 DWORD 13
-	L12 DWORD 5
-	L13 DWORD 23
+	L3 DWORD 4
+	L4 BYTE "text for text", 0
+	L5 DWORD 10
+	L6 DWORD 50
+	L7 DWORD 6
+	L8 DWORD 13
+	L9 DWORD 5
+	L10 DWORD 3
+	L11 DWORD 23
 
 .data
 	buffer BYTE 256 dup(0)
@@ -56,41 +54,24 @@ m1:
 	push L2
 	call OutputInt
 e0:
-	mov eax, condv
-	cmp eax, condk
+	mov eax, L2
+	cmp eax, L1
 	jne m2
 	je m3
 	je m3
 m2:
 	push L1
 	call OutputInt
-	jmp e1
 m3:
-	push L2
-	call OutputInt
-e1:
-	mov eax, condv
-	cmp eax, eax
-	jz m4
-	jnz m5
-	je m5
-m4:
-	push L1
-	call OutputInt
-	jmp e2
-m5:
-	push L2
-	call OutputInt
-e2:
-	push L1
+	push L3
 	jmp local0
 local0:
 	pop eax
 	ret
 cond ENDP
 
-text PROC 
-	push offset L3
+text PROC pzm : DWORD
+	push offset L4
 	jmp local1
 local1:
 	pop eax
@@ -113,19 +94,6 @@ local2:
 pow ENDP
 
 main PROC
-	mov eax, L4
-	cmp eax, eax
-	jz m6
-	jnz m7
-	je m7
-m6:
-	push offset L5
-	call OutputStr
-	jmp e3
-m7:
-	push offset L6
-	call OutputStr
-e3:
 	call Date
 	push eax
 	pop maindate
@@ -136,10 +104,10 @@ e3:
 	pop maintime
 	push maintime
 	call OutputStr
-	push L7
+	push L5
 	pop mainy
 	push mainy
-	push L8
+	push L6
 	pop ebx
 	pop eax
 	sub eax, ebx
@@ -152,34 +120,34 @@ e3:
 	pop mainpos
 	push mainpos
 	call OutputStr
-	push L9
-	push L10
+	push L3
+	push L7
 	pop edx
 	pop edx
-	push L10
-	push L9
+	push L7
+	push L3
 	call cond
 	push eax
 	pop mainres
 	push mainres
 	call OutputInt
-	push L11
+	push L8
 	pop maini
 	push maini
 	call OutputInt
-	push L9
+	push L3
 	pop eax
 	mov [mainarr+0], eax
-	push L12
+	push L9
 	pop eax
 	mov [mainarr+4], eax
-	push L10
+	push L7
 	pop eax
 	mov [mainarr+8], eax
 	push mainy
-	push L4
+	push L10
 	pop edx
-	push L4
+	push L10
 	call pow
 	push eax
 	pop eax
@@ -197,7 +165,7 @@ e3:
 	pop mainpolish
 	push mainpolish
 	call OutputInt
-	push L13
+	push L11
 	mov eax, 4
 	mul L2
 	mov esi, eax

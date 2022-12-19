@@ -96,7 +96,8 @@ namespace Gen {
 			flag_proc = false,
 			flag_callfunc = false,
 			flag_condition = false,
-			flag_cycle = false;
+			flag_cycle = false,
+			has_param = false;
 
 		int result_position;
 		bool newValForArray = 0;
@@ -115,6 +116,7 @@ namespace Gen {
 						&& idT.table[lexT.table[i].idxTI].idtype == IT::P) {
 						out << idT.table[lexT.table[i].idxTI].id << " : ";
 						out << "DWORD";
+						has_param = true;
 					}
 
 					if (lexT.table[i].lexema == LEX_COMMA)
@@ -122,6 +124,11 @@ namespace Gen {
 
 					i++;
 				}
+				if (!has_param) {
+					out << "pzm : DWORD";
+				}
+				has_param = false;
+
 				flag_func = true;
 				out << "\n";
 				break;

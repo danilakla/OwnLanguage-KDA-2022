@@ -6,18 +6,11 @@ uint func cond(uint v,uint k)
    }else{
    print 2;
    }
-    if(v!k){
+    if(2!1){
    print 1;
-   }else{
-   print 2;
    }
 
-     if(v){
-   print 1;
-   }else{
-   print 2;
-   }
-   ret 1;
+ ret 4;
 }
 
 str func text(){
@@ -30,13 +23,9 @@ ret res;
 }
 
 
+
 main
 {
-    if(3){
-    print '23';
-    }else{
-    print '32';
-    }
    var str date = Date();
    print date;
    var str time = Time();
@@ -63,3 +52,5 @@ main
   polish=arr[1];
   print polish;
 }
+
+
