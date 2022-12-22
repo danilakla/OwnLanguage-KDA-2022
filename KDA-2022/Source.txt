@@ -1,56 +1,16 @@
-uint func cond(uint v,uint k) 
-{
-
-   if(v>k){
-   print 1;
-   }else{
-   print 2;
-   }
-    if(2!1){
-   print 1;
-   }
-
- ret 4;
+uint func bl1(){
+ret 24;
 }
+main{
+//var uint lf11=332; comment//
+var [3] uint bf=1,2,3; 
+var uint b=32+bf[2]+bl1();
+bf[2]=10+3;
+var uint bfn=bf[2];
+var str bbv='test for str';
 
-str func text(){
-ret 'text for text';
+print bbv;
+print bfn;
+print 'tes';
+print b;
 }
-
-uint func pow(uint c){
-var uint res=c*c;
-ret res;
-}
-
-
-
-main
-{
-   var str date = Date();
-   print date;
-   var str time = Time();
-   print time;
-   var uint x;
-   var uint y;
-
-   y = 10;
-   x = y - 50;
-   print x;
-   var str pos = text();
-   print pos;
- 
-   var uint res = cond(4,6);
-   print res;
-   var uint i = 8x15;
-   print i;
-   var uint polish;
-   var [3]uint arr=4,5,6;
-   
-   polish = y+pow(3)+arr[2];
-   print polish;
-   arr[1]=23+arr[2];
-  polish=arr[1];
-  print polish;
-}
-
-

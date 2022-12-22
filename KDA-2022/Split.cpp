@@ -119,6 +119,9 @@ void cleanup(char source[], int size, Log::LOG logfile) {
 		}
 	}
 
-	if (count % 2 != 0)
+	if (count % 2 != 0 || count == 1) {
 		Log::WriteError(logfile, Error::geterror(300));
-}
+		throw ERROR_THROW(300);
+
+	}
+	}

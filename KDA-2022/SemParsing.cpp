@@ -20,20 +20,20 @@ namespace Semantic {
                 if (lex.lextable.table[i + 1].idxTI != LT_TI_NULLIDX) {
                     if (lex.idtable.table[lex.lextable.table[i + 1].idxTI].idtype == IT::IDTYPE::F) {
                         good = false;
-                        Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[j].sn, -1));
+                        Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[i].sn, -1));
                     }
                 }
                 if (lex.lextable.table[i + 1].idxTI != LT_TI_NULLIDX) {
                     if (lex.idtable.table[lex.lextable.table[i + 1].idxTI].iddatatype == IT::IDDATATYPE::UINTARRAY) {
                         good = false;
-                        Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[j].sn, -1));
+                        Log::WriteError(log, Error::geterrorin(309, lex.lextable.table[i].sn, -1));
                     }
                 }
             break;
             case LEX_IF:  
                 j = i + 2;
                     for (j; lex.lextable.table[j].lexema != LEX_RIGHTHESIS; j++) {
-                        if (lex.lextable.table[j].idxTI != LT_TI_NULLIDX&& lex.lextable.table[j].lexema!= LEX_OPERATOR) {//error
+                        if (lex.lextable.table[j].idxTI != LT_TI_NULLIDX&& lex.lextable.table[j].lexema!= LEX_OPERATOR) {
                             if (lex.idtable.table[lex.lextable.table[j].idxTI].iddatatype != IT::UINT) {
                                 good = false;
                                 Log::WriteError(log, Error::geterrorin(312, lex.lextable.table[j].sn, -1));

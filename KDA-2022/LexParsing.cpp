@@ -53,7 +53,6 @@ namespace Lex {
 		bool findPropery=0;
 		bool printCheck = 0;
 
-
 		std::stack<std::string> functions;
 		char* bufprefix = new char[10] { "" };
 		char* L = new char[2] { "L" };

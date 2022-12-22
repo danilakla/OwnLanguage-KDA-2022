@@ -7,7 +7,8 @@ namespace Gen {
 	{
 		lexT = plexT;
 		idT = pidT;  		
-		out = ofstream("..\\ASM\\Assembler_code.asm", ios_base::out);
+		//out = ofstream("..\\ASM\\Assembler_code.asm", ios_base::out);
+		out = ofstream(pout, ios_base::out);
 
 		Head();
 		Const();
@@ -35,6 +36,8 @@ namespace Gen {
 
 	void Generator::Const() {
 		out << ".CONST\n";
+		out << "\tnum_err byte \'Error: Переполнение в результате арифметической операции!\', 0\n";
+
 		for (int i = 0; i < idT.size; i++)
 		{
 			if (idT.table[i].idtype == IT::L)
@@ -210,19 +213,34 @@ namespace Gen {
 						switch (lexT.table[i].op) {
 						case LT::OMUL:
 							out << "\tpop eax\n\tpop ebx\n";
-							out << "\tmul ebx\n\tpush eax\n";
+							out << "\tmul ebx\n";
+							out << "\tcmp eax, 2147483647\n";
+							out << "\ja num_error\n";
+							out << "\tpush eax\n";
+							
 							break;
 						case LT::OPLUS:
 							out << "\tpop eax\n\tpop ebx\n";
-							out << "\tadd eax, ebx\n\tpush eax\n";
+							out << "\tadd eax, ebx\n";
+							out << "\tpush eax\n";
+							out << "\tcmp eax, 2147483647\n";
+							out << "\ja num_error\n";
+							out << "\tpush eax\n";
+
 							break;
 						case LT::OMINUS:
 							out << "\tpop ebx\n\tpop eax\n";
-							out << "\tsub eax, ebx\n\tpush eax\n";
+							out << "\tsub eax, ebx\n";
+							out << "\tcmp eax, 2147483647\n";
+							out << "\ja num_error\n";
+							out << "\tpush eax\n";
 							break;
 						case LT::ODIV:
 							out << "\tpop ebx\n\tpop eax\n";
-							out << "\tcdq\n\tidiv ebx\n\tpush eax\n";
+							out << "\tcdq\n\tidiv ebx\n";
+							out << "\tcmp eax, 2147483647\n";
+							out << "\ja num_error\n";
+							out << "\tpush eax\n";
 							break;
 						}
 						break;
@@ -306,7 +324,8 @@ namespace Gen {
 						out << "theend:\n";
 						flag_ret = false;
 					}
-					out << "\tpush 0\n\tcall ExitProcess\nmain ENDP\nend main";
+					out << "push 0\ncall ExitProcess\nnum_error::\npush offset num_err\ncall OutputStr\ncall ExitProcess\nmain ENDP\nend main";
+
 				}
 				if (flag_func && !flag_then && !flag_else && !flag_cycle) {
 					if (flag_ret) {

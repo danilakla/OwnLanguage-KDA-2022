@@ -13,12 +13,13 @@ EXTRN OutputStr: proc
 .stack 4096
 
 .CONST
+	num_err byte 'Error: Переполнение в результате арифметической операции!', 0
 	L1 DWORD 1
 	L2 DWORD 2
-	L3 DWORD 4
-	L4 BYTE "text for text", 0
-	L5 DWORD 10
-	L6 DWORD 50
+	L3 BYTE "text for text", 0
+	L4 DWORD 10
+	L5 DWORD 50
+	L6 DWORD 4
 	L7 DWORD 6
 	L8 DWORD 13
 	L9 DWORD 5
@@ -54,16 +55,33 @@ m1:
 	push L2
 	call OutputInt
 e0:
-	mov eax, L2
-	cmp eax, L1
+	mov eax, condv
+	cmp eax, condk
 	jne m2
 	je m3
 	je m3
 m2:
 	push L1
 	call OutputInt
+	jmp e1
 m3:
-	push L3
+	push L2
+	call OutputInt
+e1:
+	mov eax, condv
+	cmp eax, condk
+	jae m4
+	jb m5
+	je m5
+m4:
+	push L1
+	call OutputInt
+	jmp e2
+m5:
+	push L2
+	call OutputInt
+e2:
+	push L1
 	jmp local0
 local0:
 	pop eax
@@ -71,7 +89,7 @@ local0:
 cond ENDP
 
 text PROC pzm : DWORD
-	push offset L4
+	push offset L3
 	jmp local1
 local1:
 	pop eax
@@ -84,6 +102,8 @@ pow PROC powc : DWORD
 	pop eax
 	pop ebx
 	mul ebx
+	cmp eax, 2147483647
+ja num_error
 	push eax
 	pop powres
 	push powres
@@ -104,14 +124,9 @@ main PROC
 	pop maintime
 	push maintime
 	call OutputStr
-	push L5
+	push L4
 	pop mainy
-	push mainy
-	push L6
-	pop ebx
-	pop eax
-	sub eax, ebx
-	push eax
+	push L5
 	pop mainx
 	push mainx
 	call OutputInt
@@ -120,12 +135,12 @@ main PROC
 	pop mainpos
 	push mainpos
 	call OutputStr
-	push L3
+	push L6
 	push L7
 	pop edx
 	pop edx
 	push L7
-	push L3
+	push L6
 	call cond
 	push eax
 	pop mainres
@@ -135,7 +150,7 @@ main PROC
 	pop maini
 	push maini
 	call OutputInt
-	push L3
+	push L6
 	pop eax
 	mov [mainarr+0], eax
 	push L9
@@ -154,6 +169,9 @@ main PROC
 	pop ebx
 	add eax, ebx
 	push eax
+	cmp eax, 2147483647
+ja num_error
+	push eax
 	mov eax, 4
 	mul L2
 	mov esi, eax
@@ -161,6 +179,9 @@ main PROC
 	pop eax
 	pop ebx
 	add eax, ebx
+	push eax
+	cmp eax, 2147483647
+ja num_error
 	push eax
 	pop mainpolish
 	push mainpolish
@@ -174,6 +195,9 @@ main PROC
 	pop ebx
 	add eax, ebx
 	push eax
+	cmp eax, 2147483647
+ja num_error
+	push eax
 	mov eax, 4
 	mul L1
 	mov esi, eax
@@ -185,7 +209,11 @@ pop [mainarr+esi]
 	pop mainpolish
 	push mainpolish
 	call OutputInt
-	push 0
-	call ExitProcess
+push 0
+call ExitProcess
+num_error::
+push offset num_err
+call OutputStr
+call ExitProcess
 main ENDP
 end main
