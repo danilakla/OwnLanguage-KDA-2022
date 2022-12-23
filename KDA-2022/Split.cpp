@@ -86,10 +86,7 @@ void cleanComment(char origin[], int size, Log::LOG logfile) {
 		}
 	}
 
-	for (int i = 0; i < size; i++)
-	{
-		std::cout << origin[i];
-	}
+	
 }
 void cleanup(char source[], int size, Log::LOG logfile) {
 	char Separators[] = { " ,;<>(){}[]=+-*/|^~_!" };

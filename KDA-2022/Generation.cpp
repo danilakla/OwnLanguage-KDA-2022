@@ -7,8 +7,8 @@ namespace Gen {
 	{
 		lexT = plexT;
 		idT = pidT;  		
-		//out = ofstream("..\\ASM\\Assembler_code.asm", ios_base::out);
-		out = ofstream(pout, ios_base::out);
+		out = ofstream("..\\ASM\\Assembler_code.asm", ios_base::out);
+		//out = ofstream(pout, ios_base::out);
 
 		Head();
 		Const();

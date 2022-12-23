@@ -66,7 +66,6 @@ namespace Lex {
 
 		for (int i = 0; word[i] != NULL; i++, indexLex++)
 		{
-			std::cout << strlen(word[i]) << std::endl;
 			if (strlen(word[i]) > 72) {
 				throw ERROR_THROW_IN(211, line, position);
 
@@ -401,6 +400,10 @@ namespace Lex {
 				case FST_MINUS:
 					entryLT.priority = 2;
 					entryLT.op = LT::operations::OMINUS;
+					/*if (lextable.table[i - 2].lexema == '=') {
+						throw ERROR_THROW(222);
+
+					}*/
 					break;
 				case FST_DIRSLASH:
 					entryLT.priority = 3;
